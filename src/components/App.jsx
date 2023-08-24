@@ -4,10 +4,14 @@ import { Filter } from './Filter/Filter';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Container } from './App.styled';
+import { useSelector } from 'react-redux';
 
 const STORAGE_KEY = 'contacts';
 
 export const App = () => {
+  const userContacts = useSelector(state => state.userContacts.contacts);
+  console.log('userContacts', userContacts);
+
   const [contacts, setContacts] = useState(
     JSON.parse(localStorage.getItem(STORAGE_KEY)) || []
   );
