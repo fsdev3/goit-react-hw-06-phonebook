@@ -1,8 +1,14 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilter } from 'redux/selectors';
+import { setFilter } from 'redux/filterSlice';
 import { FilterDiv } from './Filter.styled';
-import PropTypes from 'prop-types';
 
-export function Filter({ filter, onChange }) {
+export const Filter = () => {
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+
+  const onChange = e => dispatch(setFilter(e.target.value));
   return (
     <FilterDiv>
       <label>Find contact by Name: </label>
@@ -10,13 +16,8 @@ export function Filter({ filter, onChange }) {
         type="text"
         name="filter"
         value={filter}
-        onChange={e => onChange(e.target.value)}
+        onChange={e => onChange(e)}
       />
     </FilterDiv>
   );
-}
-
-Filter.propTypes = {
-  filter: PropTypes.string,
-  onChange: PropTypes.func,
 };

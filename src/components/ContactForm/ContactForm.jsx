@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { Form } from './ContactForm.styled';
-import PropTypes from 'prop-types';
+import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-export function ContactForm({ onSubmitHandler }) {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (name.trim() === '' || number.trim() === '') {
-      return;
+    const searchResult = contacts.find(contact => contact.name === name);
+    if (searchResult) {
+      alert(`${name} is already in contacts`);
+      return false;
     }
-    onSubmitHandler({ name, number });
+    dispatch(addContact({ name, number }));
     setName('');
     setNumber('');
   };
@@ -39,8 +45,4 @@ export function ContactForm({ onSubmitHandler }) {
       <button type="submit">Add contact</button>
     </Form>
   );
-}
-
-ContactForm.propTypes = {
-  onSubmitHandler: PropTypes.func,
 };
